@@ -16,8 +16,9 @@ class SessionFactory {
     private array $sessions = [];
 
     public function init(): void{
+        if (!is_dir(Loader::getInstance()->getDataFolder() . "players")) @mkdir(Loader::getInstance()->getDataFolder() . "players");
         foreach (glob(Loader::getInstance()->getDataFolder() . "players/"."*.yml") as $file) {
-            $this->createSession(basename($file, ".yml"));
+            $this->add(basename($file, ".yml"));
         }
         Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All sessions have been loaded, number of sessions loaded: " . count($this->getSessions()));
     }
@@ -26,7 +27,7 @@ class SessionFactory {
      * @param string $name
      * @return Session|null
      */
-    public function getSession(string $name): ?Session {
+    public function get(string $name): ?Session {
         return $this->sessions[$name] ?? null;
     }
 
@@ -34,16 +35,8 @@ class SessionFactory {
      * @param string $name
      * @return void
      */
-    public function createSession(string $name): void {
+    public function add(string $name): void {
         $this->sessions[$name] = new Session($name);
-    }
-
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function deleteSession(string $name): void {
-        unset($this->sessions[$name]);
     }
 
     /**

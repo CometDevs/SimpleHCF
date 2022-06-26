@@ -15,6 +15,7 @@ class FactionsFactory{
     private array $factions = [];
 
     public function init(): void{
+        if (!is_dir(Loader::getInstance()->getDataFolder() . "factions")) @mkdir(Loader::getInstance()->getDataFolder() . "factions");
         foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.yml") as $file) {
             $this->add(new Faction(new FactionData(yaml_parse_file($file))));
         }
