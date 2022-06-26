@@ -5,8 +5,8 @@ death:
   lightning: true
   signs: true
 
-mapNumber: 1
-kitMap: false
+map-number: 1
+kit-map: false
 # You can find your time zone here https://www.php.net/manual/en/timezones.php
 time-zone: "America/Chicago"
 
