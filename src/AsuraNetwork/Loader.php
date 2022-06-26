@@ -6,8 +6,10 @@ use AsuraNetwork\economy\EconomyFactory;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\session\SessionFactory;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\SingletonTrait;
 
 class Loader extends PluginBase{
+    use SingletonTrait;
 
     /** @var FactionsFactory */
     private static FactionsFactory $factionsFactory;
@@ -18,7 +20,7 @@ class Loader extends PluginBase{
         self::$factionsFactory = new FactionsFactory();
         self::$sessionsFactory = new SessionFactory();
 
-        // Please not use method static with main, use singletontrait
+        // Please don't use method static with main, use SingletonTrait
         EconomyFactory::getInstance()->init();
     }
 
