@@ -1,0 +1,10 @@
+max-name: 16
+min-name: 4
+
+max-players: 5
+max-dtr: 5.1
+# in seconds
+freeze-time: 900
+# in seconds
+regeneration-time: 300
+dtr-regeneration: 1
