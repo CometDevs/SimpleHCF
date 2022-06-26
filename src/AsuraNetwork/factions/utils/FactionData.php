@@ -1,8 +1,8 @@
 <?php
 
-namespace AsuraNetwork\systems\factions\utils;
+namespace AsuraNetwork\factions\utils;
 
-class FactionData{
+final class FactionData{
 
     public function __construct(
       private array $data

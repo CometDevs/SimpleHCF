@@ -1,8 +1,8 @@
 <?php
 
-namespace AsuraNetwork\systems\factions\listener;
+namespace AsuraNetwork\factions\listener;
 
-use AsuraNetwork\systems\factions\event\FactionCreateEvent;
+use AsuraNetwork\factions\event\FactionCreateEvent;
 use pocketmine\event\Listener;
 
 class FactionListener implements Listener{

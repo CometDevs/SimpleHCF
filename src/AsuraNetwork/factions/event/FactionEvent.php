@@ -1,8 +1,8 @@
 <?php
 
-namespace AsuraNetwork\systems\factions\event;
+namespace AsuraNetwork\factions\event;
 
-use AsuraNetwork\systems\factions\Faction;
+use AsuraNetwork\factions\Faction;
 use pocketmine\event\Event;
 
 class FactionEvent extends Event{

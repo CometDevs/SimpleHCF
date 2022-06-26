@@ -1,13 +1,14 @@
 <?php
 
-namespace AsuraNetwork\systems\factions;
+namespace AsuraNetwork\factions;
 
+use AsuraNetwork\factions\event\FactionCreateEvent;
+use AsuraNetwork\factions\event\FactionDeleteEvent;
+use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\Loader;
-use AsuraNetwork\systems\factions\event\FactionCreateEvent;
-use AsuraNetwork\systems\factions\utils\FactionData;
 use pocketmine\utils\SingletonTrait;
 
-class FactionsManager{
+class FactionsFactory{
     use SingletonTrait;
 
     /** @var Faction[] */
@@ -18,8 +19,8 @@ class FactionsManager{
     }
 
     private function init(): void{
-        foreach (glob(Loader::getInstance()->getDataFolder() . "factions/*.yml") as $file) {
-            $contents = yaml_parse_file($file);
+        foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.yml") as $file) {
+            $this->add(new Faction(new FactionData(yaml_parse_file($file))));
         }
     }
 
@@ -37,6 +38,9 @@ class FactionsManager{
         }
         $this->add($faction = new Faction(new FactionData($data)));
         (new FactionCreateEvent($faction))->call();
+    }
+
+    public function delete(string $name): void{
     }
 
 

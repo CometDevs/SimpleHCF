@@ -1,6 +1,6 @@
 <?php
 
-namespace AsuraNetwork\systems\factions\event;
+namespace AsuraNetwork\factions\event;
 
 class FactionCreateEvent extends FactionEvent{
 

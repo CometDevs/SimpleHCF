@@ -1,8 +1,9 @@
 <?php
 
-namespace AsuraNetwork\systems\factions;
+namespace AsuraNetwork\factions;
 
-use AsuraNetwork\systems\factions\utils\FactionData;
+use AsuraNetwork\factions\event\FactionDeleteEvent;
+use AsuraNetwork\factions\utils\FactionData;
 
 class Faction{
 
@@ -23,6 +24,10 @@ class Faction{
 
     public function getBalance(): int{
         return $this->getFactionData()->getSimple("balance", 1000);
+    }
+
+    public function delete(): void{
+        (new FactionDeleteEvent($this))->call();
     }
 
 }
