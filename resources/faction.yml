@@ -1,13 +1,34 @@
-max-name: 16
-min-name: 4
+configuration:
+  name:
+    length:
+      maximum: 16
+      minimum: 4
+    banned:
+      - "Owner"
+      - "Player"
+  claim:
+    length:
+      minimum: 5
+      maximum: 60
+    price-per-block: 5
+  max-players: 5
+  dtr:
+    max: 5.1
+    regeneration: 1
+    freeze-time: 900
+    regeneration-time: 300
+    dtr-regeneration: 1
+    death-dtr-lose: 1
+  logs: true
 
-broadcast-creation: true
-broadcast-deletion: true
 
-max-players: 5
-max-dtr: 5.1
-# in seconds
-freeze-time: 900
-# in seconds
-regeneration-time: 300
-dtr-regeneration: 1
+
+broadcast:
+  creation:
+    enabled: true
+    message: "{BLUE}Faction {faction_name} was created by {player_name}"
+  deletion:
+      enabled: true
+      message: "{BLUE}Faction {faction_name} was deleted by {player_name}"
+
+

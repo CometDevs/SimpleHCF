@@ -21,4 +21,8 @@ class Loader extends PluginBase{
         // Please don't use method static with main, use SingletonTrait
         EconomyFactory::getInstance()->init();
     }
+
+    private function initListeners(): void{
+
+    }
 }

@@ -3,3 +3,6 @@ apple: 15
 ender-pearl: 16
 # 3600 seconds equals 1 hour
 gapple: 3600
+faction:
+  stuck: 16
+  home: 16

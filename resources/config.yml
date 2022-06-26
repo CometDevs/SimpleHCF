@@ -1,8 +1,24 @@
-overworld-border: 1000
-end-border: 1000
-nether-border: 1000
+border:
+  overworld: 1000
+
+death:
+  lightning: true
+  signs: true
+
+mapNumber: 1
+kitMap: false
+time-zone: EST
+
+end:
+  enabled: true
+  border: 400
+  exit-location: "world,0.5,75,0.5,0,0"
+
+nether:
+  enabled: true
+  border: 1000
+  exit-location: "world,0.5,75,0.5,0,0"
 
 # support BedrockEconomy, EconomyAPI, Capital
 economy-provider: BedrockEconomy
-
 capital-selector:

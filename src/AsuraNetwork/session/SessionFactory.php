@@ -2,6 +2,7 @@
 namespace AsuraNetwork\session;
 
 use AsuraNetwork\Loader;
+use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
@@ -18,7 +19,7 @@ class SessionFactory {
     public function init(): void{
         if (!is_dir(Loader::getInstance()->getDataFolder() . "players")) @mkdir(Loader::getInstance()->getDataFolder() . "players");
         foreach (glob(Loader::getInstance()->getDataFolder() . "players/"."*.yml") as $file) {
-            $this->add(basename($file, ".yml"));
+            $this->add(new Session(basename($file, ".yml"), yaml_parse_file($file)));
         }
         Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All sessions have been loaded, number of sessions loaded: " . count($this->getSessions()));
     }
@@ -32,11 +33,29 @@ class SessionFactory {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      * @return void
      */
-    public function add(string $name): void {
-        $this->sessions[$name] = new Session($name);
+    public function add(Session $session): void {
+        $this->sessions[$session->getName()] = $session;
+    }
+
+    public function exists(string $name): bool{
+        return isset($this->sessions[$name]);
+    }
+
+    public function create(Player $player): void{
+        if ($this->exists($player->getName())){
+            return;
+        }
+        $this->add(new Session($player->getName(), [
+            "faction" => null,
+            "faction-role" => null,
+            "invincible-time" => 3600,
+            "kills" => 0,
+            "deaths" => 0,
+            "cooldowns" => []
+        ]));
     }
 
     /**

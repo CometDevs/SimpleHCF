@@ -15,14 +15,23 @@ class Session{
     /** @var Faction|null */
     private ?Faction $faction = null;
     private string $name;
+    private array $data;
 
     /**
      * Session constructor.
      * @param string $name
+     * @param array $data
      */
-    public function __construct(string $name) {
+    public function __construct(string $name, array $data) {
         $this->name = $name;
-        $this->loadUserData();
+        $this->data = $data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string{
+        return $this->name;
     }
 
     /**
@@ -30,13 +39,6 @@ class Session{
      */
     public function getFaction(): ?Faction{
         return $this->faction;
-    }
-
-    /**
-     * @return void
-     */
-    public function loadUserData(): void{
-
     }
 
     /**
