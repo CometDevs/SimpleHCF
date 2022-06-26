@@ -9,6 +9,9 @@ use AsuraNetwork\economy\providers\EconomyProvider;
 use AsuraNetwork\Loader;
 use pocketmine\utils\SingletonTrait;
 
+/**
+ * @link https://github.com/DaPigGuy/libPiggyEconomy
+ */
 class EconomyFactory{
     use SingletonTrait;
 
