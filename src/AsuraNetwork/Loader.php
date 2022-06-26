@@ -12,5 +12,5 @@ class Loader extends PluginBase{
         self::$instance = $this;
     }
 
-    
+
 }
