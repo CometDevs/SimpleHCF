@@ -2,6 +2,7 @@
 
 namespace AsuraNetwork;
 
+use AsuraNetwork\economy\EconomyFactory;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\session\SessionFactory;
 use pocketmine\plugin\PluginBase;
@@ -14,6 +15,8 @@ class Loader extends PluginBase{
     private static FactionsFactory $factionsFactory;
     /** @var SessionFactory */
     private static SessionFactory $sessionsFactory;
+    /** @var EconomyFactory */
+    private static EconomyFactory $economyFactory;
 
     public function onLoad(): void{
         self::$instance = $this;
@@ -22,6 +25,7 @@ class Loader extends PluginBase{
     public function onEnable(): void{
         self::$factionsFactory = new FactionsFactory();
         self::$sessionsFactory = new SessionFactory();
+        self::$economyFactory = new EconomyFactory();
     }
 
     /**
@@ -36,6 +40,13 @@ class Loader extends PluginBase{
      */
     public static function getSessionsFactory(): SessionFactory{
         return self::$sessionsFactory;
+    }
+
+    /**
+     * @return EconomyFactory
+     */
+    public static function getEconomyFactory(): EconomyFactory{
+        return self::$economyFactory;
     }
 
 }
