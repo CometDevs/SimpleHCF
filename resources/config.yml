@@ -7,7 +7,8 @@ death:
 
 mapNumber: 1
 kitMap: false
-time-zone: EST
+# You can find your time zone here https://www.php.net/manual/en/timezones.php
+time-zone: "America/Chicago"
 
 end:
   enabled: true
@@ -20,5 +21,5 @@ nether:
   exit-location: "world,0.5,75,0.5,0,0"
 
 # support BedrockEconomy, EconomyAPI, Capital
-economy-provider: BedrockEconomy
+economy-provider: "BedrockEconomy"
 capital-selector:

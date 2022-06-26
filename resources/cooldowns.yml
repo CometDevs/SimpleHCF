@@ -1,8 +1,18 @@
 # here was cooldowns in seconds
-apple: 15
-ender-pearl: 16
+apple:
+  time: 15
+  formatted: "&l&eApple&r"
+ender-pearl:
+  time: 16
+  formatted: "&l&dEnder Pearl&r"
 # 3600 seconds equals 1 hour
-gapple: 3600
+gapple:
+  time: 3600
+  formatted: "&l&gGAPPLE&r"
 faction:
-  stuck: 16
-  home: 16
+  stuck:
+    time: 16
+    formatted: "&l&9Stuck&r"
+  home:
+    time: 16
+    formatted: "&l&3Hom&r"
