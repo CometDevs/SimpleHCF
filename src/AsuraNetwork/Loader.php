@@ -15,8 +15,6 @@ class Loader extends PluginBase{
     private static FactionsFactory $factionsFactory;
     /** @var SessionFactory */
     private static SessionFactory $sessionsFactory;
-    /** @var EconomyFactory */
-    private static EconomyFactory $economyFactory;
 
     public function onLoad(): void{
         self::$instance = $this;
@@ -25,7 +23,9 @@ class Loader extends PluginBase{
     public function onEnable(): void{
         self::$factionsFactory = new FactionsFactory();
         self::$sessionsFactory = new SessionFactory();
-        self::$economyFactory = new EconomyFactory();
+
+        // Please not use method static with main, use singletontrait
+        EconomyFactory::getInstance()->init();
     }
 
     /**
@@ -41,12 +41,4 @@ class Loader extends PluginBase{
     public static function getSessionsFactory(): SessionFactory{
         return self::$sessionsFactory;
     }
-
-    /**
-     * @return EconomyFactory
-     */
-    public static function getEconomyFactory(): EconomyFactory{
-        return self::$economyFactory;
-    }
-
 }

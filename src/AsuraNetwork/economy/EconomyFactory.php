@@ -19,11 +19,6 @@ class EconomyFactory{
     private array $providers = [];
     private string $provider = "bedrockeconomy";
 
-    public function __construct(){
-        self::setInstance($this);
-        $this->init();
-    }
-
     public function init(): void{
         $this->registerProvider(["bedrockeconomy"], new BedrockEconomyProvider());
         $this->registerProvider(["capital"], new CapitalProvider());
