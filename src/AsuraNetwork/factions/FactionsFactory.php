@@ -14,11 +14,7 @@ class FactionsFactory{
     /** @var Faction[] */
     private array $factions = [];
 
-    public function __construct(){
-        $this->init();
-    }
-
-    private function init(): void{
+    public function init(): void{
         foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.yml") as $file) {
             $this->add(new Faction(new FactionData(yaml_parse_file($file))));
         }

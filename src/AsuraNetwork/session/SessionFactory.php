@@ -2,20 +2,24 @@
 namespace AsuraNetwork\session;
 
 use AsuraNetwork\Loader;
-use AsuraNetwork\session\Session;
-use pocketmine\player\Player;
-use pocketmine\utils\Config;
+use pocketmine\utils\SingletonTrait;
+use pocketmine\utils\TextFormat;
 
 /**
  * Class SessionFactory
  * @package AsuraNetwork\session
  */
 class SessionFactory {
+    use SingletonTrait;
 
-    /** @var Session[] $sessions */
+    /** @var Session[] */
     private array $sessions = [];
 
-    public function __construct(){
+    public function init(): void{
+        foreach (glob(Loader::getInstance()->getDataFolder() . "players/"."*.yml") as $file) {
+            $this->createSession(basename($file, ".yml"));
+        }
+        Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All sessions have been loaded, number of sessions loaded: " . count($this->getSessions()));
     }
 
     /**
@@ -40,5 +44,12 @@ class SessionFactory {
      */
     public function deleteSession(string $name): void {
         unset($this->sessions[$name]);
+    }
+
+    /**
+     * @return Session[]
+     */
+    public function getSessions(): array{
+        return $this->sessions;
     }
 }
