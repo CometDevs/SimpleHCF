@@ -3,10 +3,10 @@
 namespace AsuraNetwork\factions;
 
 use AsuraNetwork\factions\event\FactionCreateEvent;
-use AsuraNetwork\factions\event\FactionDeleteEvent;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\Loader;
 use pocketmine\utils\SingletonTrait;
+use pocketmine\utils\TextFormat;
 
 class FactionsFactory{
     use SingletonTrait;
@@ -16,31 +16,42 @@ class FactionsFactory{
 
     public function __construct(){
         self::$instance = $this;
+        $this->init();
     }
 
     private function init(): void{
         foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.yml") as $file) {
             $this->add(new Faction(new FactionData(yaml_parse_file($file))));
         }
+        Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All factions have been loaded, number of factions loaded: " . count($this->getFactions()));
     }
 
-    public function add(Faction $faction): void{
+    public function add(Faction $faction): bool{
+        if ($this->exists($faction->getName())) return false;
         $this->factions[$faction->getName()] = $faction;
+        return true;
     }
 
     public function exists(string $name): bool{
         return isset($this->factions[$name]);
     }
 
+    public function get(string $name): ?Faction{
+        return $this->factions[$name] ?? null;
+    }
+
     public function create(array $data): void{
         if ($this->exists($data['name'])){
             return;
         }
-        $this->add($faction = new Faction(new FactionData($data)));
-        (new FactionCreateEvent($faction))->call();
+        if ($this->add($faction = new Faction(new FactionData($data)))) {
+            (new FactionCreateEvent($faction))->call();
+        }
     }
 
     public function delete(string $name): void{
+        $this->get($name)?->delete();
+        unset($this->factions[$name]);
     }
 
 

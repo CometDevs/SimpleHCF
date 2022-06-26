@@ -22,4 +22,13 @@ class FactionRole{
             new FactionRole("Member")
         );
     }
+
+    public static function fromString(string $name): ?self{
+        foreach (self::getAll() as $enum) {
+            if ($enum->enumName == $name){
+                return $enum;
+            }
+        }
+        return null;
+    }
 }
