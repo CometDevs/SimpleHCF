@@ -1,7 +1,8 @@
 name: SimpleHCF
 main: AsuraNetwork\Loader
-version: 0.1
+version: 0.1.3
 api: 4.5.1
 authors:
-  - AppGallery
-  - JonyGamesYT09
+  - AsuraNetwork
+depend:
+  - SimplePacketHandler

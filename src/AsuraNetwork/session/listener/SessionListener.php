@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork\session\listener;
 
 use AsuraNetwork\session\SessionFactory;

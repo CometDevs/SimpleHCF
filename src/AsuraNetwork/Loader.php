@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork;
 
 use AsuraNetwork\economy\EconomyFactory;
@@ -8,6 +10,7 @@ use AsuraNetwork\factions\listener\FactionListener;
 use AsuraNetwork\session\listener\SessionListener;
 use AsuraNetwork\session\SessionFactory;
 use AsuraNetwork\utils\ConfigUtils;
+use CortexPE\Commando\PacketHooker;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
@@ -40,11 +43,22 @@ class Loader extends PluginBase{
         EconomyFactory::getInstance()->init();
 
         $this->initListeners();
+        $this->initDependencies();
     }
 
     private function initListeners(): void{
         foreach ([new SessionListener(), new FactionListener()] as $listener) {
             $this->getServer()->getPluginManager()->registerEvents($listener, $this);
         }
+    }
+
+    private function initDependencies(): void{
+        if (!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
+        }
+    }
+
+    public static function isKitMap(): bool{
+        return self::$config['kit-map'] ?? false;
     }
 }

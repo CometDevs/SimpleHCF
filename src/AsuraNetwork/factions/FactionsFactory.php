@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork\factions;
 
 use AsuraNetwork\factions\event\FactionCreateEvent;

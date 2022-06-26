@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork\economy;
 
 use AsuraNetwork\economy\providers\BedrockEconomyProvider;

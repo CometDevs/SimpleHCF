@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9764a20f6c4be09b8490b4c21b21d211",
+    "content-hash": "9e2b0888565f2901095cfb1c50a46e9a",
     "packages": [
         {
             "name": "fgrosse/phpasn1",
@@ -199,6 +199,40 @@
             "time": "2021-08-15T20:50:18+00:00"
         },
         {
+            "name": "cortexpe/commando",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CortexPE/Commando.git",
+                "reference": "ede058439d2b217a0f5de86d7456a7a96d2d296f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CortexPE/Commando/zipball/ede058439d2b217a0f5de86d7456a7a96d2d296f",
+                "reference": "ede058439d2b217a0f5de86d7456a7a96d2d296f",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CortexPE\\Commando\\": [
+                        "src\\CortexPE\\Commando\\"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "description": "A Command Framework virion for PocketMine-MP ",
+            "support": {
+                "issues": "https://github.com/CortexPE/Commando/issues",
+                "source": "https://github.com/CortexPE/Commando/tree/master"
+            },
+            "time": "2022-04-04T13:57:06+00:00"
+        },
+        {
             "name": "netresearch/jsonmapper",
             "version": "v4.0.0",
             "source": {
@@ -248,6 +282,65 @@
                 "source": "https://github.com/cweiske/jsonmapper/tree/v4.0.0"
             },
             "time": "2020-12-01T19:48:11+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "1.7.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "cd0202ea1b1fc6d1bbe156c6e2e18a03e0ff160a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cd0202ea1b1fc6d1bbe156c6e2e18a03e0ff160a",
+                "reference": "cd0202ea1b1fc6d1bbe156c6e2e18a03e0ff160a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "source": "https://github.com/phpstan/phpstan/tree/1.7.15"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpstan",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-06-20T08:29:01+00:00"
         },
         {
             "name": "pocketmine/bedrock-data",
@@ -1314,11 +1407,16 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "cortexpe/commando": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "ext-yaml": "*",
+        "ext-json": "*",
+        "ext-pthreads": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

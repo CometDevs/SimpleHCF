@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork\economy\providers;
 
 use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;

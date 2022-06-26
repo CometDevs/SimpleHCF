@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace AsuraNetwork\session;
 
 use AsuraNetwork\factions\Faction;
@@ -32,6 +35,13 @@ class Session{
      */
     public function getName(): string{
         return $this->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array{
+        return $this->data;
     }
 
     /**
