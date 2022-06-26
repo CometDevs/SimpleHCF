@@ -8,6 +8,8 @@ use AsuraNetwork\factions\event\FactionDeleteEvent;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\factions\utils\FactionMember;
 use AsuraNetwork\factions\utils\FactionRole;
+use AsuraNetwork\Loader;
+use pocketmine\utils\Filesystem;
 
 class Faction{
 
@@ -53,6 +55,10 @@ class Faction{
 
     public function delete(): void{
         (new FactionDeleteEvent($this))->call();
+    }
+
+    public function save(): void{
+        Filesystem::safeFilePutContents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getName() . ".yml", $this->getFactionData()->serialize());
     }
 
 }

@@ -38,13 +38,15 @@ class FactionsFactory{
         return $this->factions[$name] ?? null;
     }
 
-    public function create(array $data): void{
+    public function create(array $data): ?Faction{
         if ($this->exists($data['name'])){
-            return;
+            return null;
         }
         if ($this->add($faction = new Faction(new FactionData($data)))) {
+            $faction->save();
             (new FactionCreateEvent($faction))->call();
         }
+        return $faction;
     }
 
     public function delete(string $name): void{

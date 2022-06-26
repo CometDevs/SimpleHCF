@@ -1,6 +1,8 @@
 border:
   overworld: 1000
 
+language: eng
+
 death:
   lightning: true
   signs: true

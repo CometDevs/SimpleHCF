@@ -20,6 +20,9 @@ configuration:
     dtr-regeneration: 1
     death-dtr-lose: 1
   logs: true
+  start-balance: 1000
+  reduce-balance: 1000
+  reduce-balance-on-creation: true
 
 
 

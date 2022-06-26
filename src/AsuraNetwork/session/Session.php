@@ -51,6 +51,17 @@ class Session{
         return $this->faction;
     }
 
+    public function hasFaction(): bool{
+        return $this->faction !== null;
+    }
+
+    /**
+     * @param Faction|null $faction
+     */
+    public function setFaction(?Faction $faction): void{
+        $this->faction = $faction;
+    }
+
     /**
      * @return Player|null
      */

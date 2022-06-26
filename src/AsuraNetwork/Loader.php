@@ -7,6 +7,7 @@ namespace AsuraNetwork;
 use AsuraNetwork\economy\EconomyFactory;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\factions\listener\FactionListener;
+use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\session\listener\SessionListener;
 use AsuraNetwork\session\SessionFactory;
 use AsuraNetwork\utils\ConfigUtils;
@@ -41,6 +42,7 @@ class Loader extends PluginBase{
         FactionsFactory::getInstance()->init();
         SessionFactory::getInstance()->init();
         EconomyFactory::getInstance()->init();
+        LanguageFactory::getInstance()->init(self::$config['language'] ?? "eng");
 
         $this->initListeners();
         $this->initDependencies();
