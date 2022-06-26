@@ -15,27 +15,30 @@ class SessionFactory {
     /** @var Session[] $sessions */
     private array $sessions = [];
 
+    public function __construct(){
+    }
+
     /**
-     * @param Player $player
+     * @param string $name
      * @return Session|null
      */
-    public function getSession(Player $player): ?Session {
-        return $this->sessions[$player->getName()] ?? null;
+    public function getSession(string $name): ?Session {
+        return $this->sessions[$name] ?? null;
     }
 
     /**
-     * @param Player $player
+     * @param string $name
      * @return void
      */
-    public function createSession(Player $player): void {
-        $this->sessions[$player->getName()] = new Session($player);
+    public function createSession(string $name): void {
+        $this->sessions[$name] = new Session($name);
     }
 
     /**
-     * @param Player $player
+     * @param string $name
      * @return void
      */
-    public function deleteSession(Player $player): void {
-        unset($this->sessions[$player->getName()]);
+    public function deleteSession(string $name): void {
+        unset($this->sessions[$name]);
     }
 }

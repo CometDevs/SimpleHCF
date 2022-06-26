@@ -20,7 +20,6 @@ class EconomyFactory{
     private string $provider = "bedrockeconomy";
 
     public function __construct(){
-        self::setInstance($this);
         $this->init();
     }
 
