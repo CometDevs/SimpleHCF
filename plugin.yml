@@ -1,0 +1,7 @@
+name: SimpleHCF
+main: AsuraNetwork\Loader
+version: 0.1
+api: 4.5.1
+authors:
+  - AppGallery
+  - JonyGamesYT09
