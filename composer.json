@@ -1,0 +1,19 @@
+{
+  "name": "asuranetwork/simplehcf",
+  "description": "An HCF plugin made for PocketMine-MP by AsuraNetwork",
+  "type": "project",
+  "license": "LGPL-3.0",
+
+  "require": {
+    "php": "^8.0",
+    "fgrosse/phpasn1": "^2.3"
+  },
+  "require-dev": {
+    "pocketmine/pocketmine-mp": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "asuranetwork\\simplehcf\\": "src/"
+    }
+  }
+}
