@@ -2,7 +2,9 @@
 namespace AsuraNetwork\session;
 
 use AsuraNetwork\factions\Faction;
+use AsuraNetwork\session\exception\PlayerNonOnlineException;
 use pocketmine\player\Player;
+use pocketmine\Server;
 
 /**
  * Class Session
@@ -10,18 +12,16 @@ use pocketmine\player\Player;
  */
 class Session{
 
-    /** @var Player */
-    private Player $player;
-
     /** @var Faction|null */
     private ?Faction $faction = null;
+    private string $name;
 
     /**
-     * Loader constructor.
-     * @param Player $player
+     * Session constructor.
+     * @param string $name
      */
-    public function __construct(Player $player) {
-        $this->player = $player;
+    public function __construct(string $name) {
+        $this->name = $name;
         $this->loadUserData();
     }
 
@@ -40,9 +40,25 @@ class Session{
     }
 
     /**
-     * @return Player
+     * @return Player|null
      */
-    public function getPlayer(): Player {
-        return $this->player;
+    public function getPlayer(): ?Player {
+        try {
+            return $this->getPlayerNonNull();
+        } catch (PlayerNonOnlineException $exception) {
+            return null;
+        }
+    }
+
+    /**
+     * @return Player
+     * @throws PlayerNonOnlineException
+     */
+    public function getPlayerNonNull(): Player{
+        $player = Server::getInstance()->getPlayerExact($this->name);
+        if ($player === null){
+            throw new PlayerNonOnlineException($this->name);
+        }
+        return $player;
     }
 }

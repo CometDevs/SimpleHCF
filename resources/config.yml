@@ -1,5 +1,3 @@
-broadcast-creation: true
-broadcast-deletion: true
 overworld-border: 1000
 end-border: 1000
 nether-border: 1000

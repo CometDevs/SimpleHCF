@@ -15,7 +15,6 @@ class FactionsFactory{
     private array $factions = [];
 
     public function __construct(){
-        self::$instance = $this;
         $this->init();
     }
 

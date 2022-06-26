@@ -18,7 +18,7 @@ class EconomyFactory{
     /** @var EconomyProvider[] */
     private array $providers = [];
     private string $provider = "bedrockeconomy";
-
+	
     public function init(): void{
         $this->registerProvider(["bedrockeconomy"], new BedrockEconomyProvider());
         $this->registerProvider(["capital"], new CapitalProvider());

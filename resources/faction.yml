@@ -1,6 +1,9 @@
 max-name: 16
 min-name: 4
 
+broadcast-creation: true
+broadcast-deletion: true
+
 max-players: 5
 max-dtr: 5.1
 # in seconds
