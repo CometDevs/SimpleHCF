@@ -42,7 +42,7 @@ class CapitalProvider extends EconomyProvider{
     public function giveMoney(Player $player, float $amount, ?callable $callback = null): void{
         Capital::api($this->version, function (Capital $api) use ($callback, $amount, $player) {
             try {
-                yield from $api->addMoney($this->oracle, $player, $this->selector, (int)$amount, new LabelSet(["reason" => "some reason"]),);
+                yield from $api->addMoney($this->oracle, $player, $this->selector, (int)$amount, new LabelSet(["reason" => "some reason"]));
                 if ($callback) $callback(true);
             } catch (CapitalException $e) {
                 if ($callback) $callback(false);
@@ -53,7 +53,7 @@ class CapitalProvider extends EconomyProvider{
     public function takeMoney(Player $player, float $amount, ?callable $callback = null): void{
         Capital::api($this->version, function (Capital $api) use ($callback, $amount, $player) {
             try {
-                yield from $api->takeMoney($this->oracle, $player, $this->selector, (int)$amount, new LabelSet(["reason" => "some reason"]),);
+                yield from $api->takeMoney($this->oracle, $player, $this->selector, (int)$amount, new LabelSet(["reason" => "some reason"]));
                 if ($callback) $callback(true);
             } catch (CapitalException $e) {
                 if ($callback) $callback(false);

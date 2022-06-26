@@ -2,7 +2,7 @@
 
 namespace AsuraNetwork\utils;
 
-final class ConfigurationUtils{
+final class ConfigUtils{
 
     public static function load(string $file): mixed{
         if (!file_exists($file)) return false;

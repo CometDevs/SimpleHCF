@@ -7,7 +7,7 @@ use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\factions\listener\FactionListener;
 use AsuraNetwork\session\listener\SessionListener;
 use AsuraNetwork\session\SessionFactory;
-use AsuraNetwork\utils\ConfigurationUtils;
+use AsuraNetwork\utils\ConfigUtils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
@@ -25,9 +25,9 @@ class Loader extends PluginBase{
         $this->saveResource("cooldowns.yml");
         $this->saveResource("faction.yml");
 
-        self::$config = ConfigurationUtils::load($this->getDataFolder() . "config.yml");
-        self::$factionConfig = ConfigurationUtils::load($this->getDataFolder() . "faction.yml");
-        self::$cooldownsConfig = ConfigurationUtils::load($this->getDataFolder() . "cooldowns.yml");
+        self::$config = ConfigUtils::load($this->getDataFolder() . "config.yml");
+        self::$factionConfig = ConfigUtils::load($this->getDataFolder() . "faction.yml");
+        self::$cooldownsConfig = ConfigUtils::load($this->getDataFolder() . "cooldowns.yml");
 
         if(!date_default_timezone_set(self::$config["time-zone"] ??"America/Chicago")){
             $this->getLogger()->error(TextFormat::RED . "The timezone identifier isn't valid");
