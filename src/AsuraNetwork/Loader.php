@@ -25,6 +25,10 @@ class Loader extends PluginBase{
     public static mixed $cooldownsConfig = false;
     public static mixed $config = false;
 
+    public function onLoad(): void{
+        self::setInstance($this); //LMAO Xavier
+    }
+
     public function onEnable(): void{
         $this->saveConfig();
         $this->saveResource("abilities.yml");
