@@ -19,17 +19,17 @@ class Koth {
   /** @var Vector3|null $position */
   private ?Vector3 $position;
   
-  /** @var string $rewards */
-  private string $rewards;
+  /** @var string[] $rewards */
+  private array $rewards = [];
   
   /**
    * Koth constructor.
    * @param string $name
    * @param World $world
    * @param Vector3 $position
-   * @param string $rewards
+   * @param array $rewards
    */
-  public function __construct(string $name, World $world, Vector3 $position, string $rewards) {
+  public function __construct(string $name, World $world, Vector3 $position, array $rewards) {
     $this->name = $name;
     $this->world = $world;
     $this->position = $position;
@@ -58,9 +58,9 @@ class Koth {
   }
   
   /**
-   * @return string
+   * @return array
    */
-  public function getReward(): string {
+  public function getRewards(): array {
     return $this->rewards;
   }
 }
