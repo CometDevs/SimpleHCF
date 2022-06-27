@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AsuraNetwork\factions\command\subcommands;
 
 use AsuraNetwork\economy\EconomyFactory;
+use AsuraNetwork\factions\command\arguments\FactionNameArgument;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\factions\utils\FactionConfig;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\Loader;
 use AsuraNetwork\session\SessionFactory;
-use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\constraint\InGameRequiredConstraint;
 use pocketmine\command\CommandSender;
@@ -21,7 +21,7 @@ class CreateSubCommand extends BaseSubCommand{
 
     protected function prepare(): void{
         $this->addConstraint(new InGameRequiredConstraint($this));
-        $this->registerArgument(0, new RawStringArgument("faction_name"));
+        $this->registerArgument(0, new FactionNameArgument("faction_name"));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void{

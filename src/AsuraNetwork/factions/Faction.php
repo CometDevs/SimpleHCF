@@ -87,7 +87,7 @@ class Faction{
     }
 
     public function save(): void{
-        Filesystem::safeFilePutContents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getName() . ".yml", $this->getFactionData()->serialize());
+        file_put_contents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getName() . ".yml", $this->getFactionData()->serialize());
     }
 
 }

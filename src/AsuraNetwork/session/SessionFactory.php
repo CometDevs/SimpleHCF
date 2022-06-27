@@ -51,14 +51,16 @@ class SessionFactory {
         if ($this->exists($player->getName())){
             return;
         }
-        $this->add(new Session($player->getName(), [
+        $this->add((new Session($player->getName(), [
+            "xuid" => $player->getXuid(),
+            "uid" => $player->getUniqueId()->toString(),
             "faction" => null,
             "faction-role" => null,
             "invincible-time" => 3600,
             "kills" => 0,
             "deaths" => 0,
             "cooldowns" => []
-        ]));
+        ]))->save());
     }
 
     public function getSessionByPrefix(string $name): ?Session{

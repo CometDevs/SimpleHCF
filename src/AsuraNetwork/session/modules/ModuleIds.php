@@ -4,5 +4,6 @@ namespace AsuraNetwork\session\modules;
 
 final class ModuleIds{
     public const INVITE = "invite";
+    public const STATS = "stats";
 
 }

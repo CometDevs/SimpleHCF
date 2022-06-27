@@ -22,9 +22,9 @@ class EconomyFactory{
     private string $provider = "bedrockeconomy";
 	
     public function init(): void{
-        $this->registerProvider(["bedrockeconomy"], new BedrockEconomyProvider());
-        $this->registerProvider(["capital"], new CapitalProvider());
-        $this->registerProvider(["economys", "economyapi"], new EconomyAPIPProvider());
+        if (BedrockEconomyProvider::checkDependencies()) $this->registerProvider(["bedrockeconomy"], new BedrockEconomyProvider());
+        if (CapitalProvider::checkDependencies()) $this->registerProvider(["capital"], new CapitalProvider());
+        if (EconomyAPIPProvider::checkDependencies()) $this->registerProvider(["economys", "economyapi"], new EconomyAPIPProvider());
         $this->provider = strtolower(Loader::getInstance()->getConfig()->get("economy-provider", "bedrockeconomy"));
     }
 

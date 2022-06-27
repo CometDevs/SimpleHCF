@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace AsuraNetwork\factions;
 
+use AsuraNetwork\factions\command\FactionCommand;
 use AsuraNetwork\factions\event\FactionCreateEvent;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\Loader;
+use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
@@ -22,6 +24,7 @@ class FactionsFactory{
             $this->add(new Faction(new FactionData(yaml_parse_file($file))));
         }
         Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All factions have been loaded, number of factions loaded: " . count($this->getFactions()));
+        Server::getInstance()->getCommandMap()->register("faction", new FactionCommand(Loader::getInstance(), "faction", "Faction command", ['f', 't']));
     }
 
     public function add(Faction $faction): bool{

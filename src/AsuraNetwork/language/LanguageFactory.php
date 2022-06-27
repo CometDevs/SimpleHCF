@@ -15,18 +15,16 @@ final class LanguageFactory{
     protected array $translations;
 
     public function init(?string $language): void{
-        $languagesFolder = Loader::getInstance()->getDataFolder() . "languages" . DIRECTORY_SEPARATOR;
+        $languagesFolder = Loader::getInstance()->getDataFolder() . "languages/";
         @mkdir($languagesFolder);
-        Loader::getInstance()->saveResource($languagesFolder . $language . ".ini");
+        Loader::getInstance()->saveResource("languages/" . $language . ".ini");
 
-        if (!$language || !file_exists($languagesFolder . DIRECTORY_SEPARATOR . $language.".ini")) {
+        if (!$language || !file_exists($languagesFolder . $language.".ini")) {
             $language = self::DEFAULT_LANGUAGE;
         }
 
         $this->language = $language;
-        $this->translations = parse_ini_file(
-            $languagesFolder . DIRECTORY_SEPARATOR . $language . ".ini"
-        );
+        $this->translations = array_map("stripcslashes", parse_ini_string(file_get_contents($languagesFolder . $language . ".ini"), false, INI_SCANNER_RAW));
     }
 
     public function getTranslations(): array{
@@ -35,8 +33,8 @@ final class LanguageFactory{
 
     public function getTranslation(string $translation, array $params = []): ?string{
         return $this->hasTranslation($translation) ?
-            TextFormat::colorize($this->translate($translation, $params)) :
-            "No translation of the text $translation was found in the $this->language language.";
+            TextFormat::colorize($this->translate($translation, $params), "") :
+            TextFormat::RED . "No translation of the text $translation was found in the $this->language language.";
     }
 
     public function hasTranslation(string $translation): bool{

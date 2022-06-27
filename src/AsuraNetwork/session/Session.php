@@ -7,10 +7,12 @@ namespace AsuraNetwork\session;
 use AsuraNetwork\factions\Faction;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\language\LanguageFactory;
+use AsuraNetwork\Loader;
 use AsuraNetwork\session\exception\PlayerNonOnlineException;
 use AsuraNetwork\session\modules\InviteModule;
 use AsuraNetwork\session\modules\Module;
 use AsuraNetwork\session\modules\ModuleIds;
+use AsuraNetwork\session\modules\StatsModule;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
@@ -45,6 +47,14 @@ class Session{
         return $this->name;
     }
 
+    public function getXuid(): string{
+        return $this->data['xuid'];
+    }
+
+    public function getUuid(): string{
+        return $this->data['uuid'];
+    }
+
     /**
      * @return array
      */
@@ -75,6 +85,7 @@ class Session{
      */
     public function setFaction(?Faction $faction): void{
         $this->faction = $faction;
+        $this->save();
     }
 
     /**
@@ -82,6 +93,7 @@ class Session{
      */
     public function setRole(?FactionRole $role): void{
         $this->role = $role;
+        $this->save();
     }
 
     /**
@@ -117,6 +129,7 @@ class Session{
 
     public function init(): void{
         $this->modules[ModuleIds::INVITE] = new InviteModule($this);
+        $this->modules[ModuleIds::STATS] = new StatsModule($this, $this->getData()['kills'], $this->getData()['deaths']);
     }
 
     public function getModule(string $id): ?Module{
@@ -125,5 +138,23 @@ class Session{
 
     public function getInvitesModule(): InviteModule{
         return $this->modules[ModuleIds::INVITE];
+    }
+
+    public function getStatsModule(): StatsModule{
+        return $this->modules[ModuleIds::STATS];
+    }
+
+    public function save(): Session{
+        file_put_contents(Loader::getInstance()->getDataFolder() . 'players/' . $this->getName() . '.yml', yaml_emit([
+            "xuid" => $this->getXuid(),
+            "uid" => $this->getUuid(),
+            "faction" => $this->getFaction()?->getName(),
+            "faction-role" => $this->getRole()?->name(),
+            "invincible-time" => 3600,
+            "kills" => $this->getStatsModule()->getKills(),
+            "deaths" => $this->getStatsModule()->getDeaths(),
+            "cooldowns" => []
+        ]));
+        return $this;
     }
 }
