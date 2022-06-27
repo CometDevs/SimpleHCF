@@ -6,6 +6,7 @@ use pocketmine\player\Player;
 use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 use pocketmine\Server;
 
 /**
@@ -34,10 +35,10 @@ class KothFactory {
     foreach ($this->getKothsData() as $kothData) {
       $world = Server::getInstance()->getWorldManager()->getWorldByName($kothData["world"]);
       $coordinates = explode(":", $kothData["position"]);
-      $position = new Vector3($coordinates[0], $coordinates[1], $coordinates[2]);
+      $position = new Vector3((int)$coordinates[0], (int)$coordinates[1], (int)$coordinates[2]);
       $this->add(new Koth($kothData["name"], $world, $position, $kothData["rewards"]));
     }
-    Loader::getInstance()->getLogger()->info("");
+    Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All koths have been loaded, number of koths loaded: " . count($this->getKoths()));
   }
 
   /**
@@ -71,10 +72,59 @@ class KothFactory {
   public function add(Koth $koth): void {
     $this->koths[$koth->getName()] = $koth;
   }
+  
+  /**
+   * @param string $kothName
+   * @return Koth|null
+   */
+  public function get(string $kothName): ?Koth {
+    return $this->koths[$kothName] ?? null;
+  }
+  
+  /**
+   * @param string $kothName
+   * @return bool
+   */
+  public function exist(string $kothName): bool {
+    return isset($this->koths[$kothName]);
+  }
 
   /**
   * @return void
   */
-  public function createKOTH(): void {}
-
+  public function createKOTH(string $name, World $world, Vector3 $position, array $rewards): void {
+    $config = new Config(Loader::getInstance()->getDataFolder() . $name . ".yml", Config::YAML);
+    $savedPos = $position->getX() . ":" . $position->getY() . ":" . $position->getZ();
+    $data = [
+      "name" => $name,
+      "world" => $world->getName(),
+      "position" => $savedPos,
+      "rewards" => $rewards
+      ];
+    $config->setAll($data);
+    $config->save();
+    $koth = new Koth($name, $world, $position, $rewards);
+    $this->add($koth);
+  }
+  
+  /**
+   * @param string $kothName
+   * @return void
+   */
+  public function deleteKOTH(string $kothName): void {
+    if (!$this->exist($kothName)) return;
+    if ($this->get($kothName)->isEnabled()) $this->get($kothName)->setEnabled(false);
+    unset($this->koths[$kothName]);
+    if (file_exists(Loader::getInstance()->getDataFolder() . $kothName . ".yml")) {
+    unlink(Loader::getInstance()->getDataFolder() . $kothName . ".yml");
+    }
+    Loader::getInstance()->getLogger()->info(TextFormat::GREEN . "Koth " . $kothName . " was removed successfully.");
+  }
+  
+  /**
+   * @return array
+   */
+  public function getKoths(): array {
+    return $this->koths;
+  }
 }
