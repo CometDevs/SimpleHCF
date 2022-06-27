@@ -79,6 +79,7 @@ class CreateSubCommand extends BaseSubCommand{
                 EconomyFactory::getInstance()->getProvider()->takeMoney($sender, Loader::$factionConfig['configuration']["reduce-balance"]);
             }
             SessionFactory::getInstance()->get($sender->getName())?->setFaction($faction);
+            SessionFactory::getInstance()->get($sender->getName())?->setRole(FactionRole::LEADER());
         }
     }
 }

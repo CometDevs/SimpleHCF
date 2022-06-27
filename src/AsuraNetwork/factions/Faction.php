@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AsuraNetwork\factions;
 
 use AsuraNetwork\factions\event\FactionDeleteEvent;
+use AsuraNetwork\factions\event\player\PlayerJoinFactionEvent;
+use AsuraNetwork\factions\threads\ThreadManager;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\factions\utils\FactionMember;
 use AsuraNetwork\factions\utils\FactionRole;
@@ -14,6 +16,7 @@ use AsuraNetwork\session\SessionFactory;
 use Exception;
 use pocketmine\MemoryManager;
 use pocketmine\utils\Filesystem;
+use RuntimeException;
 
 class Faction{
 
@@ -21,8 +24,7 @@ class Faction{
     private array $members = [];
 
     public function __construct(
-        private FactionData $factionData
-    ){
+        private FactionData $factionData){
         $this->initPlayers();
     }
 
@@ -55,19 +57,25 @@ class Faction{
         return $this->members[$name] ?? null;
     }
 
-    public function addMember(Session $member, string $invited = "none"): void{
+    public function addMember(Session $member, string $inviter = "none"): void{
         if ($this->getMember($member->getName()) === null){
+            return;
+        }
+        $ev = new PlayerJoinFactionEvent($this, $member->getPlayerNonNull());
+        $ev->call();
+        if ($ev->isCancelled()){
             return;
         }
         $this->members[$member->getName()] = new FactionMember($member->getName(), $this, FactionRole::MEMBER(),[
             "kills" => 0,
             "deaths" => 0,
             "join-time" => date('Y-m-d H:i:s'),
-            "invited-by" => $invited
+            "invited-by" => $inviter
         ]);
         $member->setFaction($this);
         $member->setRole(FactionRole::MEMBER());
-        $this->senTranslation("player-joined", [$member->getName(), $invited]);
+        $this->senTranslation("player-joined", [$member->getName(), $inviter]);
+        $this->log("Player {$member->getName()} has joined the faction and was invited by $inviter");
     }
 
     /**
@@ -91,7 +99,7 @@ class Faction{
                 return $member;
             }
         }
-        throw new Exception("Leader not found!");
+        throw new RuntimeException("Leader not found!");
     }
 
     public function delete(): void{
@@ -113,6 +121,10 @@ class Faction{
 
     public function save(): void{
         file_put_contents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getName() . ".yml", $this->getFactionData()->serialize());
+    }
+
+    public function log(string $action): void{
+        ThreadManager::getInstance()->factionLog($this, $action);
     }
 
 }

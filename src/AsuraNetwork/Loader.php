@@ -8,6 +8,7 @@ use AsuraNetwork\economy\EconomyFactory;
 use AsuraNetwork\factions\command\FactionCommand;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\factions\listener\FactionListener;
+use AsuraNetwork\factions\threads\ThreadManager;
 use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\session\listener\SessionListener;
 use AsuraNetwork\session\SessionFactory;
@@ -45,6 +46,7 @@ class Loader extends PluginBase{
             $this->getLogger()->info(TextFormat::GREEN . "The time zone has been set to " . self::$config["time-zone"]);
         }
 
+        ThreadManager::getInstance()->init();
         FactionsFactory::getInstance()->init();
         SessionFactory::getInstance()->init();
         EconomyFactory::getInstance()->init();
@@ -54,16 +56,13 @@ class Loader extends PluginBase{
         $this->initDependencies();
     }
 
+    protected function onDisable(): void{
+        ThreadManager::getInstance()->close();
+    }
+
     private function initListeners(): void{
         foreach ([new SessionListener(), new FactionListener()] as $listener) {
             $this->getServer()->getPluginManager()->registerEvents($listener, $this);
-        }
-    }
-
-    private function initCommands(): void{
-        foreach ([new FactionCommand($this, "faction", "Faction command", ["t", "f"])
-                 ] as $command) {
-            $this->getServer()->getCommandMap()->register($command->getName(), $command);
         }
     }
 
