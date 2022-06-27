@@ -109,7 +109,7 @@ class KothFactory {
     $config = new Config(Loader::getInstance()->getDataFolder() . $name . ".yml", Config::YAML);
     $data = [
       "name" => $name,
-      "world" => $world->getName(),
+      "world" => $world->getFolderName(),
       "positions" => [
         "pos1" => null,
         "pos2" => null
