@@ -3,6 +3,10 @@ border:
 
 language: eng
 
+Kit-map:
+  sharpness: 1
+  protection: 1
+
 death:
   lightning: true
   signs: true
