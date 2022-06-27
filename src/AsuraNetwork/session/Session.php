@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AsuraNetwork\session;
 
 use AsuraNetwork\factions\Faction;
+use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\session\exception\PlayerNonOnlineException;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -17,6 +18,7 @@ class Session{
 
     /** @var Faction|null */
     private ?Faction $faction = null;
+    private ?FactionRole $role = null;
     private string $name;
     private array $data;
 
@@ -51,6 +53,13 @@ class Session{
         return $this->faction;
     }
 
+    /**
+     * @return FactionRole|null
+     */
+    public function getRole(): ?FactionRole{
+        return $this->role;
+    }
+
     public function hasFaction(): bool{
         return $this->faction !== null;
     }
@@ -60,6 +69,13 @@ class Session{
      */
     public function setFaction(?Faction $faction): void{
         $this->faction = $faction;
+    }
+
+    /**
+     * @param FactionRole|null $role
+     */
+    public function setRole(?FactionRole $role): void{
+        $this->role = $role;
     }
 
     /**

@@ -9,6 +9,7 @@ use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\factions\utils\FactionMember;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\Loader;
+use pocketmine\MemoryManager;
 use pocketmine\utils\Filesystem;
 
 class Faction{
@@ -55,6 +56,10 @@ class Faction{
 
     public function delete(): void{
         (new FactionDeleteEvent($this))->call();
+    }
+
+    public function getMember(string $name): ?FactionMember{
+        return $this->members[$name] ?? null;
     }
 
     public function save(): void{

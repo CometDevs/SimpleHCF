@@ -61,6 +61,26 @@ class SessionFactory {
         ]));
     }
 
+    public function getSessionByPrefix(string $name): ?Session{
+        $found = null;
+        $name = strtolower($name);
+        $delta = PHP_INT_MAX;
+        foreach($this->getSessions() as $session){
+            if(stripos($session->getName(), $name) === 0){
+                $curDelta = strlen($session->getName()) - strlen($name);
+                if($curDelta < $delta){
+                    $found = $session;
+                    $delta = $curDelta;
+                }
+                if($curDelta === 0){
+                    break;
+                }
+            }
+        }
+
+        return $found;
+    }
+
     /**
      * @return Session[]
      */

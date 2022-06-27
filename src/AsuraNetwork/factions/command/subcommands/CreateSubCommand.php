@@ -12,23 +12,21 @@ use AsuraNetwork\Loader;
 use AsuraNetwork\session\SessionFactory;
 use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
+use CortexPE\Commando\constraint\InGameRequiredConstraint;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\TextFormat;
 
 class CreateSubCommand extends BaseSubCommand{
 
     protected function prepare(): void{
+        $this->addConstraint(new InGameRequiredConstraint($this));
         $this->registerArgument(0, new RawStringArgument("faction_name"));
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void{
-        if (!$sender instanceof Player){
-            $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("in-game-command"));
-            return;
-        }
+        if(!$sender instanceof Player) return;
         $faction_name = $args["faction_name"];
-        if (SessionFactory::getInstance()->get($sender->getName())?->getFaction() === true){
+        if (SessionFactory::getInstance()->get($sender->getName())?->hasFaction() === true){
             $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("already-in-a-faction"));
             return;
         }

@@ -8,7 +8,9 @@
     "fgrosse/phpasn1": "^2.3",
     "ext-yaml": "*",
     "ext-json": "*",
-    "ext-pthreads": "*"
+    "ext-pthreads": "*",
+    "phpstan/phpstan-strict-rules": "^1.0",
+    "ext-ctype": "*"
   },
   "require-dev": {
     "pocketmine/pocketmine-mp": "^4.0",
@@ -17,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "asuranetwork\\simplehcf\\": "src/"
+      "": "src/"
     }
   }
 }

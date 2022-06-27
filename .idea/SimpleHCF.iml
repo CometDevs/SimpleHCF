@@ -3,11 +3,8 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vendor/adhocore/json-comment/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vendor/brick/math/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vendor/cortexpe/commando/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vendor/netresearch/jsonmapper/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vendor/pocketmine/pocketmine-mp/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
     </content>
     <orderEntry type="inheritedJdk" />

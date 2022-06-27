@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AsuraNetwork\utils;
 
 final class ConfigUtils{

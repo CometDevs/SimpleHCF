@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AsuraNetwork;
 
 use AsuraNetwork\economy\EconomyFactory;
+use AsuraNetwork\factions\command\FactionCommand;
 use AsuraNetwork\factions\FactionsFactory;
 use AsuraNetwork\factions\listener\FactionListener;
 use AsuraNetwork\language\LanguageFactory;
@@ -12,6 +13,7 @@ use AsuraNetwork\session\listener\SessionListener;
 use AsuraNetwork\session\SessionFactory;
 use AsuraNetwork\utils\ConfigUtils;
 use CortexPE\Commando\PacketHooker;
+use Exception;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
@@ -36,13 +38,13 @@ class Loader extends PluginBase{
         if(!date_default_timezone_set(self::$config["time-zone"] ??"America/Chicago")){
             $this->getLogger()->error(TextFormat::RED . "The timezone identifier isn't valid");
         } else {
-            $this->getLogger()->info(TextFormat::GREEN . "The time zone has been set to " . self::$config["time-zone"] ??"America/Chicago");
+            $this->getLogger()->info(TextFormat::GREEN . "The time zone has been set to " . self::$config["time-zone"]);
         }
 
         FactionsFactory::getInstance()->init();
         SessionFactory::getInstance()->init();
         EconomyFactory::getInstance()->init();
-        LanguageFactory::getInstance()->init(self::$config['language'] ?? "eng");
+        LanguageFactory::getInstance()->init(self::$config['language']);
 
         $this->initListeners();
         $this->initDependencies();
@@ -54,9 +56,20 @@ class Loader extends PluginBase{
         }
     }
 
+    private function initCommands(): void{
+        foreach ([new FactionCommand($this, "faction", "Faction command", ["t", "f"])
+                 ] as $command) {
+            $this->getServer()->getCommandMap()->register($command->getName(), $command);
+        }
+    }
+
     private function initDependencies(): void{
         if (!PacketHooker::isRegistered()) {
-            PacketHooker::register($this);
+            try {
+                PacketHooker::register($this);
+            } catch (Exception $exception){
+                //nothing
+            }
         }
     }
 
