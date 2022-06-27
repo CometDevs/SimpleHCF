@@ -22,6 +22,9 @@ class Koth {
   /** @var string[] $rewards */
   private array $rewards = [];
   
+  /** @var bool $enabled */
+  private bool $enabled = false;
+  
   /**
    * Koth constructor.
    * @param string $name
@@ -62,5 +65,20 @@ class Koth {
    */
   public function getRewards(): array {
     return $this->rewards;
+  }
+  
+  /**
+   * @return bool
+   */
+  public function isEnabled(): bool {
+    return $this->enabled;
+  }
+  
+  /**
+   * @param bool $value
+   * @return void
+   */
+  public function setEnabled(bool $value): void {
+    $this->enabled = $value;
   }
 }
