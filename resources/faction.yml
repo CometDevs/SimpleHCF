@@ -24,14 +24,6 @@ configuration:
   reduce-balance: 1000
   reduce-balance-on-creation: true
 
-
-
 broadcast:
-  creation:
-    enabled: true
-    message: "{BLUE}Faction {faction_name} was created by {player_name}"
-  deletion:
-      enabled: true
-      message: "{BLUE}Faction {faction_name} was deleted by {player_name}"
-
-
+  creation: true
+  deletion: true

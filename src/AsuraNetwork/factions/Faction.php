@@ -10,6 +10,8 @@ use AsuraNetwork\factions\utils\FactionMember;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\Loader;
 use AsuraNetwork\session\Session;
+use AsuraNetwork\session\SessionFactory;
+use Exception;
 use pocketmine\MemoryManager;
 use pocketmine\utils\Filesystem;
 
@@ -65,6 +67,7 @@ class Faction{
         ]);
         $member->setFaction($this);
         $member->setRole(FactionRole::MEMBER());
+        $this->senTranslation("player-joined", [$member->getName(), $invited]);
     }
 
     /**
@@ -82,9 +85,31 @@ class Faction{
         return $this->getFactionData()->getSimple("balance", 1000);
     }
 
+    public function getLeader(): FactionMember{
+        foreach ($this->members as $member) {
+            if ($member->getFactionRole()->equals(FactionRole::LEADER())){
+                return $member;
+            }
+        }
+        throw new Exception("Leader not found!");
+    }
+
     public function delete(): void{
         (new FactionDeleteEvent($this))->call();
     }
+
+    public function sendMessage(string $message): void{
+        foreach ($this->members as $member) {
+            SessionFactory::getInstance()->get($member->getName())?->sendMessage($message);
+        }
+    }
+
+    public function senTranslation(string $message, array $params = []): void{
+        foreach ($this->members as $member) {
+            SessionFactory::getInstance()->get($member->getName())?->sendTranslation($message, $params);
+        }
+    }
+
 
     public function save(): void{
         file_put_contents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getName() . ".yml", $this->getFactionData()->serialize());
