@@ -6,6 +6,7 @@ namespace AsuraNetwork\factions\command\subcommands;
 
 use AsuraNetwork\economy\EconomyFactory;
 use AsuraNetwork\factions\FactionsFactory;
+use AsuraNetwork\factions\utils\FactionConfig;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\Loader;
@@ -34,8 +35,12 @@ class CreateSubCommand extends BaseSubCommand{
             $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("faction-exists-command"));
             return;
         }
-        if (in_array($faction_name, Loader::$factionConfig['configuration']['name']['banned'])){
+        if (in_array($faction_name, FactionConfig::getBannedNames())){
             $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("faction-name-banned"));
+            return;
+        }
+        if (strlen($faction_name) >= FactionConfig::getMinName() && strlen($faction_name) < FactionConfig::getMaxName()){
+            $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("invalid-length-name"));
             return;
         }
         if (Loader::$factionConfig['configuration']['reduce-balance-on-creation'] === true) {
