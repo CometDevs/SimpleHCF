@@ -30,16 +30,13 @@ class Koth {
   
   /**
    * Koth constructor.
-   * @param string $name
+   * @param string $kothName
    * @param World $world
-   * @param Vector3 $position
    * @param array $rewards
    */
-  public function __construct(string $name, World $world, Vector3 $pos1, Vector3 $pos2, array $rewards) {
-    $this->name = $name;
+  public function __construct(string $kothName, World $world, array $rewards) {
+    $this->name = $kothName;
     $this->world = $world;
-    $this->pos1 = $pos1;
-    $this->pos1 = $pos2;
     $this->rewards = $rewards;
   }
   
@@ -65,10 +62,26 @@ class Koth {
   }
   
   /**
+   * @param Vector3 $position
+   * @return void
+   */
+  public function setPos1(Vector3 $position): void {
+    $this->pos1 = $position;
+  }
+  
+  /**
    * @return Vector3|null
    */
   public function getPos2(): ?Vector3 {
     return $this->pos2;
+  }
+  
+  /**
+   * @param Vector3 $position
+   * @return void
+   */
+  public function setPos2(Vector3 $position): void {
+    $this->pos2 = $position;
   }
   
   /**
