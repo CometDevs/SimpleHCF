@@ -20,23 +20,29 @@ class KothFactory {
 
   /** @var array $data */
   private array $data = [];
-
+  
   /**
-  * @return void
-  */
+   * @return void
+   */
   public function init(): void {
     if (!is_dir(Loader::getInstance()->getDataFolder() . "koths")) @mkdir(Loader::getInstance()->getDataFolder() . "koths");
     foreach (glob(Loader::getInstance()->getDataFolder() . "koths/" . "*.yml") as $koths) {
       $config = new Config(Loader::getInstance()->getDataFolder() . $koths, Config::YAML);
       foreach ($config->getAll() as $data) {
-        $this->registerKothData($data["name"], $data["world"], $data["position"], $data["rewards"]);
+        $this->registerKothData($data["name"], $data["world"], $data["pos1"], $data["pos2"], $data["rewards"]);
       }
     }
     foreach ($this->getKothsData() as $kothData) {
       $world = Server::getInstance()->getWorldManager()->getWorldByName($kothData["world"]);
-      $coordinates = explode(":", $kothData["position"]);
-      $position = new Vector3((int)$coordinates[0], (int)$coordinates[1], (int)$coordinates[2]);
-      $this->add(new Koth($kothData["name"], $world, $position, $kothData["rewards"]));
+      $this->add(new Koth($kothData["name"], $world, $kothData["rewards"]));
+      if ($kothData["positions"]["pos1"] != null and $kothData["positions"]["pos2"] != null) {
+        $posToString1 = explode(":", $kothData["positions"]["pos1"]);
+        $pos1 = new Vector3((int)$posToString1[0], (int)$posToString1[1], (int)$posToString1[2]);
+        $this->get($kothData["name"])->setPos1($pos1);
+        $posToString2 = explode(":", $kothData["positions"]["pos2"]);
+        $pos2 = new Vector3((int)$posToString2[0], (int)$posToString2[1], (int)$posToString2[2]);
+        $this->get($kothData["name"])->setPos2($pos2);
+      }
     }
     Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All koths have been loaded, number of koths loaded: " . count($this->getKoths()));
   }
@@ -44,15 +50,19 @@ class KothFactory {
   /**
   * @param string $name
   * @param string $worldName
-  * @param string $position
+  * @param string $pos1
+  * @param string $pos2
   * @param array $rewards
   * @return void
   */
-  public function registerKothData(string $name, string $worldName, string $position, array $rewards): void {
+  public function registerKothData(string $name, string $worldName, string $pos1 = null, string $pos2 = null, array $rewards): void {
     $data = [
       "name" => $name,
       "world" => $worldName,
-      "position" => $position,
+      "positions" => [
+        "pos1" => $pos1,
+        "pos2" => $pos2
+        ],
       "rewards" => $rewards
     ];
     $this->data[$name] = $data;
@@ -90,21 +100,54 @@ class KothFactory {
   }
 
   /**
+   * @param string $name
+   * @param World $world
+   * @param array $rewards
   * @return void
   */
-  public function createKOTH(string $name, World $world, Vector3 $position, array $rewards): void {
+  public function createKOTH(string $name, World $world, array $rewards): void {
     $config = new Config(Loader::getInstance()->getDataFolder() . $name . ".yml", Config::YAML);
-    $savedPos = $position->getX() . ":" . $position->getY() . ":" . $position->getZ();
     $data = [
       "name" => $name,
       "world" => $world->getName(),
-      "position" => $savedPos,
+      "positions" => [
+        "pos1" => null,
+        "pos2" => null
+        ],
       "rewards" => $rewards
       ];
     $config->setAll($data);
     $config->save();
-    $koth = new Koth($name, $world, $position, $rewards);
+    $koth = new Koth($name, $world, $rewards);
     $this->add($koth);
+  }
+  
+  /**
+   * @param string $kothName
+   * @param Vector3 $position
+   * @return void
+   */
+  public function setKothPos1(string $kothName, Vector3 $position): void {
+    $this->get($kothName)->setPos1($position);
+    $config = new Config(Loader::getInstance()->getDataFolder() . $kothName . ".yml", Config::YAML);
+    $config->setNested("positions", [
+      "pos1" => $position->getX() . ":" . $position->getY() . ":" . $position->getZ()
+      ]);
+    $config->save();
+  }
+  
+  /**
+   * @param string $kothName
+   * @param Vector3 $position
+   * @return void
+   */
+  public function setKothPos2(string $kothName, Vector3 $position): void {
+    $this->get($kothName)->setPos2($position);
+    $config = new Config(Loader::getInstance()->getDataFolder() . $kothName . ".yml", Config::YAML);
+    $config->setNested("positions", [
+      "pos2" => $position->getX() . ":" . $position->getY() . ":" . $position->getZ()
+      ]);
+    $config->save();
   }
   
   /**
