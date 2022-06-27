@@ -6,6 +6,8 @@ namespace AsuraNetwork\factions;
 
 use AsuraNetwork\factions\event\FactionDeleteEvent;
 use AsuraNetwork\factions\event\player\PlayerJoinFactionEvent;
+use AsuraNetwork\factions\modules\AmountModule;
+use AsuraNetwork\factions\modules\ModulesTrait;
 use AsuraNetwork\factions\threads\ThreadManager;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\factions\utils\FactionMember;
@@ -13,18 +15,26 @@ use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\Loader;
 use AsuraNetwork\session\Session;
 use AsuraNetwork\session\SessionFactory;
-use Exception;
-use pocketmine\MemoryManager;
-use pocketmine\utils\Filesystem;
 use RuntimeException;
 
 class Faction{
+    use ModulesTrait;
+
+    public const BALANCE_MODULE = "balance";
+    public const DTR_MODULE = "dtr";
+    public const POINTS_MODULE = "points";
+    public const KILLS_MODULE = "kills";
+    public const KOTH_CAPPED_MODULE = "koth-capped";
 
     /** @var FactionMember[] */
     private array $members = [];
 
+    /** @var AmountModule[] */
+    private array $modules = [];
+
     public function __construct(
         private FactionData $factionData){
+        $this->initModules();
         $this->initPlayers();
     }
 
@@ -47,6 +57,13 @@ class Faction{
      */
     public function getMembers(): array{
         return $this->members;
+    }
+
+    /**
+     * @return AmountModule[]
+     */
+    public function getModules(): array{
+        return $this->modules;
     }
 
     /**
@@ -87,10 +104,6 @@ class Faction{
 
     public function getName(): string{
         return $this->getFactionData()->getSimple("name");
-    }
-
-    public function getBalance(): int{
-        return $this->getFactionData()->getSimple("balance", 1000);
     }
 
     public function getLeader(): FactionMember{

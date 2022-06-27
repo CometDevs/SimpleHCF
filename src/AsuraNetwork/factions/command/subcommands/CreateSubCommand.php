@@ -57,7 +57,7 @@ class CreateSubCommand extends BaseSubCommand{
         }
         $faction = FactionsFactory::getInstance()->create([
             "name" => $faction_name,
-            "balance" => Loader::$factionConfig['configuration']['start-balance'],
+            "balance" => FactionConfig::getStartBalance(),
             "home" => null,
             "claim" => null,
             "kills" => 0,

@@ -29,4 +29,8 @@ final class FactionConfig{
         return Loader::$factionConfig['configuration']['claim']['length']['minimum'];
     }
 
+    public static function getStartBalance(): int{
+        return Loader::$factionConfig['configuration']['start-balance'];
+    }
+
 }
