@@ -29,7 +29,7 @@ class KothFactory {
     foreach (glob(Loader::getInstance()->getDataFolder() . "koths/" . "*.yml") as $koths) {
       $config = new Config(Loader::getInstance()->getDataFolder() . $koths, Config::YAML);
       foreach ($config->getAll() as $data) {
-        $this->registerKothData($data["name"], $data["world"], $data["pos1"], $data["pos2"], $data["rewards"]);
+        $this->registerKothData($data["name"], $data["world"], $data["positions"]["pos1"], $data["positions"]["pos2"], $data["rewards"]);
       }
     }
     foreach ($this->getKothsData() as $kothData) {
