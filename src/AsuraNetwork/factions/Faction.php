@@ -9,6 +9,7 @@ use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\factions\utils\FactionMember;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\Loader;
+use AsuraNetwork\session\Session;
 use pocketmine\MemoryManager;
 use pocketmine\utils\Filesystem;
 
@@ -28,7 +29,12 @@ class Faction{
             if (FactionRole::fromString($data['role']) == null){
                 continue;
             }
-            $this->members[$member] = new FactionMember($member, $this, FactionRole::fromString($data['role']));
+            $this->members[$member] = new FactionMember($member, $this, FactionRole::fromString($data['role']), [
+                "kills" => $data['kills'],
+                "deaths" => $data['deaths'],
+                "join-time" => $data['join-time'],
+                "invited-by" => $data['invited-by'],
+            ]);
         }
     }
 
@@ -37,6 +43,28 @@ class Faction{
      */
     public function getMembers(): array{
         return $this->members;
+    }
+
+    /**
+     * @param string $name
+     * @return FactionMember|null
+     */
+    public function getMember(string $name): ?FactionMember{
+        return $this->members[$name] ?? null;
+    }
+
+    public function addMember(Session $member, string $invited = "none"): void{
+        if ($this->getMember($member->getName()) === null){
+            return;
+        }
+        $this->members[$member->getName()] = new FactionMember($member->getName(), $this, FactionRole::MEMBER(),[
+            "kills" => 0,
+            "deaths" => 0,
+            "join-time" => date('Y-m-d H:i:s'),
+            "invited-by" => $invited
+        ]);
+        $member->setFaction($this);
+        $member->setRole(FactionRole::MEMBER());
     }
 
     /**
@@ -56,10 +84,6 @@ class Faction{
 
     public function delete(): void{
         (new FactionDeleteEvent($this))->call();
-    }
-
-    public function getMember(string $name): ?FactionMember{
-        return $this->members[$name] ?? null;
     }
 
     public function save(): void{

@@ -14,4 +14,19 @@ final class FactionConfig{
         return Loader::$factionConfig['configuration']['name']['length']['minimum'];
     }
 
+    /**
+     * @return string[]
+     */
+    public static function getBannedNames(): array{
+        return Loader::$factionConfig['configuration']['name']['banned'];
+    }
+
+    public static function getClaimMax(): int{
+        return Loader::$factionConfig['configuration']['claim']['length']['maximum'];
+    }
+
+    public static function getClaimMin(): int{
+        return Loader::$factionConfig['configuration']['claim']['length']['minimum'];
+    }
+
 }

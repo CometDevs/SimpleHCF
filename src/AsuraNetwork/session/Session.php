@@ -6,9 +6,13 @@ namespace AsuraNetwork\session;
 
 use AsuraNetwork\factions\Faction;
 use AsuraNetwork\factions\utils\FactionRole;
+use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\session\exception\PlayerNonOnlineException;
+use AsuraNetwork\session\modules\InviteModule;
+use AsuraNetwork\session\modules\ModuleIds;
 use pocketmine\player\Player;
 use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 
 /**
  * Class Session
@@ -21,6 +25,7 @@ class Session{
     private ?FactionRole $role = null;
     private string $name;
     private array $data;
+    private array $modules = [];
 
     /**
      * Session constructor.
@@ -99,5 +104,17 @@ class Session{
             throw new PlayerNonOnlineException($this->name);
         }
         return $player;
+    }
+
+    public function sendMessage(string $message): void{
+        $this->getPlayer()?->sendMessage(TextFormat::colorize($message));
+    }
+
+    public function sendTranslation(string $translation, array $params = []): void{
+        $this->getPlayer()?->sendMessage(LanguageFactory::getInstance()->getTranslation($translation, $params));
+    }
+
+    public function init(): void{
+        $this->modules[ModuleIds::INVITE] = new InviteModule($this);
     }
 }

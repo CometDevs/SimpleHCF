@@ -8,6 +8,7 @@ use AsuraNetwork\factions\Faction;
 
 class FactionMember{
 
+    protected array $data;
     private string $name;
     private Faction $faction;
     private FactionRole $factionRole;
@@ -16,11 +17,13 @@ class FactionMember{
      * @param string $name
      * @param Faction $faction
      * @param FactionRole $factionRole
+     * @param array $data
      */
-    public function __construct(string $name, Faction $faction, FactionRole $factionRole){
+    public function __construct(string $name, Faction $faction, FactionRole $factionRole, array $data){
         $this->name = $name;
         $this->faction = $faction;
         $this->factionRole = $factionRole;
+        $this->data = $data;
     }
 
     /**
@@ -49,6 +52,22 @@ class FactionMember{
      */
     public function setFactionRole(FactionRole $factionRole): void{
         $this->factionRole = $factionRole;
+    }
+
+    public function getKills(): int{
+        return $this->data['kills'] ?? 0;
+    }
+
+    public function getDeaths(): int{
+        return $this->data['deaths'];
+    }
+
+    public function getJoinTime(): string{
+        return $this->data['join-time'];
+    }
+
+    public function getInvited(): string{
+        return $this->data['invited-by'];
     }
 
 }
