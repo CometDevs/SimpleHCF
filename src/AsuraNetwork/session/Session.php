@@ -9,6 +9,7 @@ use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\session\exception\PlayerNonOnlineException;
 use AsuraNetwork\session\modules\InviteModule;
+use AsuraNetwork\session\modules\Module;
 use AsuraNetwork\session\modules\ModuleIds;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -116,5 +117,13 @@ class Session{
 
     public function init(): void{
         $this->modules[ModuleIds::INVITE] = new InviteModule($this);
+    }
+
+    public function getModule(string $id): ?Module{
+        return $this->modules[$id] ?? null;
+    }
+
+    public function getInvitesModule(): InviteModule{
+        return $this->modules[ModuleIds::INVITE];
     }
 }

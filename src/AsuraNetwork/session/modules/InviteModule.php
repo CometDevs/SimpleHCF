@@ -2,6 +2,7 @@
 
 namespace AsuraNetwork\session\modules;
 
+use _PHPStan_7a922a511\React\Dns\Query\SelectiveTransportExecutor;
 use AsuraNetwork\factions\Faction;
 use AsuraNetwork\factions\FactionsFactory;
 
@@ -23,6 +24,10 @@ class InviteModule extends Module{
     public function add(Faction $faction, string $inviter): void{
         $this->invites[$faction->getName()] = $inviter;
         $this->session->sendTranslation("invited-to", [$faction->getName(), $inviter]);
+    }
+
+    public function has(string $faction_name): bool{
+        return isset($this->invites[$faction_name]);
     }
 
     public function delete(Faction $faction): void{
