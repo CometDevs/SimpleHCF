@@ -9,10 +9,6 @@ use pocketmine\player\Player;
 
 class PlayerArgument extends BaseArgument{
 
-    public function __construct(string $name, bool $optional = false){
-        parent::__construct($name, $optional);
-    }
-
     public function getNetworkType():int{
         return AvailableCommandsPacket::ARG_TYPE_TARGET;
     }

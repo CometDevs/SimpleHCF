@@ -28,8 +28,8 @@ class FactionsFactory{
     }
 
     public function add(Faction $faction): bool{
-        if ($this->exists($faction->getName())) return false;
-        $this->factions[$faction->getName()] = $faction;
+        if ($this->exists($faction->getSimplyName())) return false;
+        $this->factions[$faction->getSimplyName()] = $faction;
         return true;
     }
 
@@ -39,6 +39,26 @@ class FactionsFactory{
 
     public function get(string $name): ?Faction{
         return $this->factions[$name] ?? null;
+    }
+
+    public function getFactionByPrefix(string $name): ?Faction{
+        $found = null;
+        $name = strtolower($name);
+        $delta = PHP_INT_MAX;
+        foreach($this->getFactions() as $faction){
+            if(stripos($faction->getSimplyName(), $name) === 0){
+                $curDelta = strlen($faction->getSimplyName()) - strlen($name);
+                if($curDelta < $delta){
+                    $found = $faction;
+                    $delta = $curDelta;
+                }
+                if($curDelta === 0){
+                    break;
+                }
+            }
+        }
+
+        return $found;
     }
 
     public function create(array $data): ?Faction{

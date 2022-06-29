@@ -67,8 +67,6 @@ class CreateSubCommand extends BaseSubCommand{
             "members" => [
                 $sender->getName() => [
                     "role" => FactionRole::LEADER()->name(),
-                    "kills" => 0,
-                    "deaths" => 0,
                     "join-time" => date('Y-m-d H:i:s'),
                     "invited-by" => "none"
                 ]

@@ -6,6 +6,18 @@ use AsuraNetwork\Loader;
 
 final class FactionConfig{
 
+    public static function getMaxMembers(): int{
+        return Loader::$factionConfig['configuration']['max-players'];
+    }
+
+    public static function getMaxDTR(): int{
+        return Loader::$factionConfig['configuration']['dtr']['max'];
+    }
+
+    public static function getFreezeTime(): int{
+        return Loader::$factionConfig['configuration']['dtr']['freeze-time'];
+    }
+
     public static function getMaxName(): int{
         return Loader::$factionConfig['configuration']['name']['length']['maximum'];
     }
@@ -27,6 +39,10 @@ final class FactionConfig{
 
     public static function getClaimMin(): int{
         return Loader::$factionConfig['configuration']['claim']['length']['minimum'];
+    }
+
+    public static function getClaimPriceByBlock(): float{
+        return Loader::$factionConfig['configuration']['claim']['price-per-block'];
     }
 
     public static function getStartBalance(): int{

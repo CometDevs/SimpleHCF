@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AsuraNetwork\factions\utils;
 
 use AsuraNetwork\factions\Faction;
+use pocketmine\player\Player;
+use pocketmine\Server;
 
 class FactionMember{
 
@@ -38,6 +40,14 @@ class FactionMember{
      */
     public function getName(): string{
         return $this->name;
+    }
+
+    public function getPlayer(): ?Player{
+        return Server::getInstance()->getPlayerExact($this->getName());
+    }
+
+    public function isOnline(): bool{
+        return (bool)$this->getPlayer()?->isConnected();
     }
 
     /**
