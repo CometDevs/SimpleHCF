@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace AsuraNetwork\session\listener;
 
 use AsuraNetwork\session\SessionFactory;
+use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\VanillaItems;
 
 class SessionListener implements Listener{
@@ -16,12 +18,9 @@ class SessionListener implements Listener{
         SessionFactory::getInstance()->create($event->getPlayer());
     }
 
-    public function handleUseEnderPearl(PlayerItemUseEvent $event): void{
+    public function handleQuit(PlayerQuitEvent $event): void{
         $player = $event->getPlayer();
-        $item = $event->getItem();
-        if ($item->equals(VanillaItems::ENDER_PEARL())){
-
-        }
+        SessionFactory::getInstance()->get($player->getName())?->onDisconnect();
     }
 
 }

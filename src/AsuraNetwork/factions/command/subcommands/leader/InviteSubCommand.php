@@ -24,12 +24,12 @@ class InviteSubCommand extends BaseSubCommand{
         $s_session = SessionFactory::getInstance()->get($sender->getName());
         if ($player instanceof Player){
             $p_session = SessionFactory::getInstance()->get($player->getName());
-            if($p_session->getInvitesModule()->has($s_session->getFaction()?->getName())){
+            if($p_session->getInvitesModule()->has($s_session->getFaction()?->getSimplyName())){
                 $s_session->sendTranslation('player-already-invited');
                 return;
             }
             $p_session->getInvitesModule()->add($s_session->getFaction(), $sender->getName());
-            $p_session->sendTranslation('invited-by', [$sender->getName(), $s_session->getFaction()?->getName()]);
+            $p_session->sendTranslation('invited-by', [$sender->getName(), $s_session->getFaction()?->getSimplyName()]);
         }
     }
 }

@@ -1,11 +1,7 @@
 <?php
 
-namespace AsuraNetwork\citadel;
+namespace AsuraNetwork\events\citadel;
 
-use AsuraNetwork\Loader;
-use AsuraNetwork\session\SessionFactory;
-use pocketmine\network\mcpe\protocol\StructureTemplateDataRequestPacket;
-use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 

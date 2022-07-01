@@ -21,8 +21,8 @@ class SessionFactory {
 
     public function init(): void{
         if (!is_dir(Loader::getInstance()->getDataFolder() . "players")) @mkdir(Loader::getInstance()->getDataFolder() . "players");
-        foreach (glob(Loader::getInstance()->getDataFolder() . "players/"."*.yml") as $file) {
-            $this->add(new Session(basename($file, ".yml"), yaml_parse_file($file)));
+        foreach (glob(Loader::getInstance()->getDataFolder() . "players/"."*.json") as $file) {
+            $this->add(new Session(basename($file, ".yml"), json_decode(file_get_contents($file), true)));
         }
         Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All sessions have been loaded, number of sessions loaded: " . count($this->getSessions()));
     }
@@ -49,6 +49,7 @@ class SessionFactory {
 
     public function create(Player $player): void{
         if ($this->exists($player->getName())){
+            $this->get($player->getName())?->onConnect();
             return;
         }
         $this->add((new Session($player->getName(), [

@@ -16,9 +16,9 @@ final class RequiredRoleConstraint extends BaseConstraint {
 
     /**
      * @param IRunnable $context
-     * @param FactionRole[] ...$role
+     * @param FactionRole[] $role
      */
-    public function __construct(IRunnable $context, ...$role) {
+    public function __construct(IRunnable $context, array $role) {
         $this->roles[] = $role;
         parent::__construct($context);
     }

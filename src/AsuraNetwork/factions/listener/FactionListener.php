@@ -15,13 +15,13 @@ class FactionListener implements Listener{
 
     public function onCreation(FactionCreateEvent $event): void{
         if (Loader::$factionConfig['broadcast']['creation'] === true){
-            Server::getInstance()->broadcastMessage(LanguageFactory::getInstance()->getTranslation("faction-creation-broadcast", [$event->getFaction()->getName(), $event->getFaction()->getLeader()->getName()]));
+            Server::getInstance()->broadcastMessage(LanguageFactory::getInstance()->getTranslation("faction-creation-broadcast", [$event->getFaction()->getSimplyName(), $event->getFaction()->getLeader()->getName()]));
         }
     }
 
     public function onDeletion(FactionDeleteEvent $event): void{
         if (Loader::$factionConfig['broadcast']['deletion'] === true){
-            Server::getInstance()->broadcastMessage(LanguageFactory::getInstance()->getTranslation("faction-deletion-broadcast", [$event->getFaction()->getName(), $event->getFaction()->getLeader()->getName()]));
+            Server::getInstance()->broadcastMessage(LanguageFactory::getInstance()->getTranslation("faction-deletion-broadcast", [$event->getFaction()->getSimplyName(), $event->getFaction()->getLeader()->getName()]));
         }
     }
 

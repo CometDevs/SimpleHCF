@@ -8,6 +8,7 @@ use AsuraNetwork\factions\command\FactionCommand;
 use AsuraNetwork\factions\event\FactionCreateEvent;
 use AsuraNetwork\factions\utils\FactionData;
 use AsuraNetwork\Loader;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
@@ -20,8 +21,8 @@ class FactionsFactory{
 
     public function init(): void{
         if (!is_dir(Loader::getInstance()->getDataFolder() . "factions")) @mkdir(Loader::getInstance()->getDataFolder() . "factions");
-        foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.yml") as $file) {
-            $this->add(new Faction(new FactionData(yaml_parse_file($file))));
+        foreach (glob(Loader::getInstance()->getDataFolder() . "factions/"."*.json") as $file) {
+            $this->add(new Faction(new FactionData(json_decode(file_get_contents($file), true))));
         }
         Loader::getInstance()->getLogger()->info(TextFormat::YELLOW . "All factions have been loaded, number of factions loaded: " . count($this->getFactions()));
         Server::getInstance()->getCommandMap()->register("faction", new FactionCommand(Loader::getInstance(), "faction", "Faction command", ['f', 't']));
@@ -59,6 +60,15 @@ class FactionsFactory{
         }
 
         return $found;
+    }
+
+    public function getPlayerFaction(string $player): ?Faction{
+        foreach ($this->getFactions() as $faction) {
+            if ($faction->isMember($player)){
+                return $faction;
+            }
+        }
+        return null;
     }
 
     public function create(array $data): ?Faction{

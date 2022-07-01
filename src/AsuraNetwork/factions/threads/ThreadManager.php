@@ -25,7 +25,7 @@ class ThreadManager{
     }
 
     public function factionLog(Faction $faction, string $action): void{
-        $this->factionLog->write("[{$faction->getName()} thread/ACTION]: $action");
+        $this->factionLog->write("[{$faction->getSimplyName()} thread/ACTION]: $action");
     }
 
 }

@@ -39,7 +39,7 @@ class CreateSubCommand extends BaseSubCommand{
             $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("faction-name-banned"));
             return;
         }
-        if (strlen($faction_name) >= FactionConfig::getMinName() && strlen($faction_name) < FactionConfig::getMaxName()){
+        if (!(strlen($faction_name) >= FactionConfig::getMinName() && strlen($faction_name) < FactionConfig::getMaxName())){
             $sender->sendMessage(LanguageFactory::getInstance()->getTranslation("invalid-length-name"));
             return;
         }

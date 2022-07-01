@@ -34,7 +34,7 @@ final class FactionData{
      * @return string
      */
     public function serialize(): string{
-        return yaml_emit($this->data);
+        return json_encode($this->data, JSON_BIGINT_AS_STRING|JSON_PRETTY_PRINT);
     }
 
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AsuraNetwork\factions;
 
-use AsuraNetwork\citadel\CitadelFactory;
+use AsuraNetwork\events\citadel\CitadelFactory;
 use AsuraNetwork\factions\claim\Claim;
 use AsuraNetwork\factions\claim\types\CitadelClaim;
 use AsuraNetwork\factions\claim\types\ConquestClaim;
@@ -59,8 +59,6 @@ class Faction{
                 continue;
             }
             $this->members[$member] = new FactionMember($member, $this, FactionRole::fromString($data['role']), [
-                "kills" => $data['kills'],
-                "deaths" => $data['deaths'],
                 "join-time" => $data['join-time'],
                 "invited-by" => $data['invited-by'],
             ]);
@@ -103,7 +101,7 @@ class Faction{
         $this->log("Player {$member->getName()} has joined the faction and was invited by $inviter");
     }
 
-    public function playerDeath(string $playerName, string $cause = "desconocido", float $dtrLoss = .99): void{
+    public function onMemberDeath(string $playerName, string $cause = "desconocido", float $dtrLoss = .99): void{
         $oldDTR = $this->getAmount(self::DTR, 0);
         $newDTR = $this->reduceAmount(self::DTR, $dtrLoss);
         $this->log("$playerName ha muerto y perdio $dtrLoss de DTR, nuevo dtr: $newDTR, causa: $cause");
@@ -169,6 +167,13 @@ class Faction{
         foreach ($this->members as $member) {
             SessionFactory::getInstance()->get($member->getName())?->sendTranslation($message, $params);
         }
+    }
+
+    /**
+     * @param Claim|null $claim
+     */
+    public function setClaim(?Claim $claim): void{
+        $this->claim = $claim;
     }
 
     public function getClaim(): ?Claim{
@@ -410,7 +415,7 @@ class Faction{
     }
 
     public function save(): void{
-        file_put_contents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getSimplyName() . ".yml", $this->getFactionData()->serialize());
+        file_put_contents(Loader::getInstance()->getDataFolder() . "factions/" . $this->getSimplyName() . ".json", $this->getFactionData()->serialize());
     }
 
     public function log(string $action): void{

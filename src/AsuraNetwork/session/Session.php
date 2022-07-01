@@ -8,6 +8,8 @@ use AsuraNetwork\factions\Faction;
 use AsuraNetwork\factions\utils\FactionRole;
 use AsuraNetwork\language\LanguageFactory;
 use AsuraNetwork\Loader;
+use AsuraNetwork\modules\pvp\InvincibilityModule;
+use AsuraNetwork\modules\scoreboard\ScoreboardModule;
 use AsuraNetwork\session\exception\PlayerNonOnlineException;
 use AsuraNetwork\session\modules\InviteModule;
 use AsuraNetwork\session\modules\Module;
@@ -85,6 +87,7 @@ class Session{
      */
     public function setFaction(?Faction $faction): void{
         $this->faction = $faction;
+        $this->data['faction'] = $faction?->getSimplyName();
         $this->save();
     }
 
@@ -93,6 +96,7 @@ class Session{
      */
     public function setRole(?FactionRole $role): void{
         $this->role = $role;
+        $this->data['faction-role'] = $role?->name();
         $this->save();
     }
 
@@ -144,17 +148,21 @@ class Session{
         return $this->modules[ModuleIds::STATS];
     }
 
+    public function onConnect(): void{
+        ScoreboardModule::getInstance()->add($this->getPlayerNonNull());
+        if (($this->getData()['invincible-time'] ?? 0) > 0) {
+            InvincibilityModule::getInstance()->add($this->getPlayerNonNull(), $this->getData()['invincible-time'] ?? 0);
+            $this->sendMessage("Tu tiempo de invincibilidad se ha cargado");
+        }
+    }
+
+    public function onDisconnect(): void{
+        $this->getData()['invincible-time'] = InvincibilityModule::getInstance()->get($this->getName());
+        $this->save();
+    }
+
     public function save(): Session{
-        file_put_contents(Loader::getInstance()->getDataFolder() . 'players/' . $this->getName() . '.yml', yaml_emit([
-            "xuid" => $this->getXuid(),
-            "uid" => $this->getUuid(),
-            "faction" => $this->getFaction()?->getName(),
-            "faction-role" => $this->getRole()?->name(),
-            "invincible-time" => 3600,
-            "kills" => $this->getStatsModule()->getKills(),
-            "deaths" => $this->getStatsModule()->getDeaths(),
-            "cooldowns" => []
-        ]));
+        file_put_contents(Loader::getInstance()->getDataFolder() . 'players/' . $this->getName() . '.json', json_encode($this->getData(), JSON_BIGINT_AS_STRING|JSON_PRETTY_PRINT));
         return $this;
     }
 }

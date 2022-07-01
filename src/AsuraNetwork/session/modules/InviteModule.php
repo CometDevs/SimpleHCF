@@ -22,8 +22,8 @@ class InviteModule extends Module{
     }
 
     public function add(Faction $faction, string $inviter): void{
-        $this->invites[$faction->getName()] = $inviter;
-        $this->session->sendTranslation("invited-to", [$faction->getName(), $inviter]);
+        $this->invites[$faction->getSimplyName()] = $inviter;
+        $this->session->sendTranslation("invited-to", [$faction->getSimplyName(), $inviter]);
     }
 
     public function has(string $faction_name): bool{
@@ -31,7 +31,7 @@ class InviteModule extends Module{
     }
 
     public function delete(Faction $faction): void{
-        unset($this->invites[$faction->getName()]);
+        unset($this->invites[$faction->getSimplyName()]);
     }
 
     public function accept(string $faction_name): void{
